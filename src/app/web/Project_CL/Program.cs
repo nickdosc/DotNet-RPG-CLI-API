@@ -7,7 +7,7 @@ using System.Threading;
 
 class Server
 {
-    static void Main()
+    static async Task Main()
     {
         // Create a TCP listener on localhost, port 12345
         TcpListener server = new TcpListener(IPAddress.Parse("127.0.0.1"), 12345);
@@ -17,42 +17,46 @@ class Server
         while (true)
         {
             // Accept a client connection
-            TcpClient client = server.AcceptTcpClient();
+            TcpClient client = await server.AcceptTcpClientAsync();
             Console.WriteLine("Client connected");
-
             // Handle the client in a new thread
             Thread clientThread = new Thread(() => HandleClient(client));
             clientThread.Start();
         }
     }
 
-    static void HandleClient(TcpClient client)
+    static async void HandleClient(TcpClient client)
     {
         NetworkStream stream = client.GetStream();
 
         byte[] buffer = new byte[1024];
         int byteCount;
-
-        while ((byteCount = stream.Read(buffer, 0, buffer.Length)) != 0)
+        while ((byteCount = await stream.ReadAsync(buffer, 0, buffer.Length)) != 0)
         {
             string request = Encoding.ASCII.GetString(buffer, 0, byteCount);
             Console.WriteLine($"Received from client: {request}");
-            string response ="";
+            string response = "";
             commandDictionary commandDictionary = new commandDictionary();
-
-            if (commandDictionary.commandHandlers.ContainsKey(request))
+            if (request.Contains("register"))
             {
-                commandDictionary.commandHandlers[request](request);
+                await commandDictionary.CreateUser(request);
                 response = commandDictionary.commandResponse;
-
             }
             else
             {
-                response = "Invalid command";
+                if (commandDictionary.commandHandlers.ContainsKey(request))
+                {
+                    commandDictionary.commandHandlers[request](request);
+                    response = commandDictionary.commandResponse;
+                }
+                else
+                {
+                    response = "Invalid command";
+                }
             }
 
             byte[] responseData = Encoding.ASCII.GetBytes(response);
-            stream.Write(responseData, 0, responseData.Length);
+            await stream.WriteAsync(responseData, 0, responseData.Length);
         }
 
         client.Close();

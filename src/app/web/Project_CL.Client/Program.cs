@@ -11,6 +11,8 @@ class Client
         NetworkStream stream = client.GetStream();
 
         Console.WriteLine("Connected to server");
+        Console.WriteLine("                           ___\r\n                          ( ((\r\n                           ) ))\r\n  .::.                    / /(\r\n 'M .-;-.-.-.-.-.-.-.-.-/| ((::::::::::::::::::::::::::::::::::::::::::::::.._\r\n(J ( ( ( ( ( ( ( ( ( ( ( |  ))   -====================================-      _.>\r\n `P `-;-`-`-`-`-`-`-`-`-\\| ((::::::::::::::::::::::::::::::::::::::::::::::''\r\n  `::'                    \\ \\(\r\n                           ) ))\r\n                          (_((");
+        Console.WriteLine("\r\n█░█░█ █▀▀ █░░ █▀▀ █▀█ █▀▄▀█ █▀▀\r\n▀▄▀▄▀ ██▄ █▄▄ █▄▄ █▄█ █░▀░█ ██▄");
         while (true)
         {
             // Get command input from user
@@ -37,7 +39,7 @@ class Client
                 string userData = $"{username}|{password}|{email}";
 
                 // Send the "register" command with user data to the server
-                string command = $"register {userData}";
+                string command = $"register|{userData}";
                 byte[] data = Encoding.ASCII.GetBytes(command);
                 stream.Write(data, 0, data.Length);
             }

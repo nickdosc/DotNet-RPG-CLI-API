@@ -27,26 +27,23 @@ namespace Project_CL.commands
             commandResponse = boxedUsers;
         }
 
-        private async Task CreateUser(string input)
+        public async Task CreateUser(string input)
         {
             // Split userInfo into username, password, and email
             string[] userFields = input.Split('|');
-            if (userFields.Length != 3)
+            if (userFields.Length != 4)
             {
                 Console.WriteLine("Invalid registration format. Expected: username|password|email");
                 return;
             }
 
-            string username = userFields[0];
-            string password = userFields[1];
-            string email = userFields[2];
+            string username = userFields[1];
+            string password = userFields[2];
+            string email = userFields[3];
 
             Console.WriteLine($"Registering user: {username}, Email: {email}");
-            await Task.Run(() =>
-            {
-                // call the actual API or DB logic to register the user
-                commandResponse = username;
-            });
+            commandResponse ="Registered user: " + username;
+            
         }
 
         private static void RegisterUser(string input)
