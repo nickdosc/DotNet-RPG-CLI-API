@@ -43,6 +43,23 @@ class Client
                 byte[] data = Encoding.ASCII.GetBytes(command);
                 stream.Write(data, 0, data.Length);
             }
+            else if (message.ToLower() == "login")
+            {
+                // Collect user registration details
+                Console.Write("Enter Username: ");
+                string username = Console.ReadLine();
+
+                Console.Write("Enter Password: ");
+                string password = Console.ReadLine();
+
+                // Format the user login details into a single string
+                string userData = $"{username}|{password}";
+
+                // Send the "login" command with user data to the server
+                string command = $"login|{userData}";
+                byte[] data = Encoding.ASCII.GetBytes(command);
+                stream.Write(data, 0, data.Length);
+            }
             else
             {
                 // Send any other commands normally

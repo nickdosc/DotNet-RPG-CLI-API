@@ -30,7 +30,7 @@
         }
 
         // POST: 
-        [HttpPost]
+        [HttpPost(Name = "createuser")]
         public ActionResult<User> CreateUser([FromBody] User newUser)
         {
             if (users.Exists(u => u.Username == newUser.Username))
