@@ -13,6 +13,11 @@ namespace Project_CL.Services
         public async Task<HttpResponseMessage> CreateUser(User user, CancellationToken cancellationToken = default)
         {
             var response = await httpClient.PostAsJsonAsync("/user", user, cancellationToken);
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error: {errorContent}");
+            }
             response.EnsureSuccessStatusCode();
             return response;
         }

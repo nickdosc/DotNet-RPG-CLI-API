@@ -1,5 +1,4 @@
-﻿
-using Azure;
+﻿using Azure;
 using System.Net.Sockets;
 using System.Text;
 
@@ -41,9 +40,10 @@ namespace Project_CL.commands
             string password = userFields[2];
             string email = userFields[3];
 
+            string result = await userInfo.CreateUser(username, password, email);
+
             Console.WriteLine($"Registering user: {username}, Email: {email}");
-            commandResponse ="Registered user: " + username;
-            
+            commandResponse = result;
         }
 
         private static void RegisterUser(string input)
