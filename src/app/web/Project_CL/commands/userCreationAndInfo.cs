@@ -36,6 +36,24 @@ namespace Project_CL.commands
             return response;
         }
 
+
+       //Login User
+       public async Task<string> LoginUser(string username, string password)
+        {
+            User user = await ApiService.GetUser(username);
+            if (user == null)
+            {
+                return "User not found.";
+            }
+            if (EncryptionService.VerifyPassword(password, user.Password))
+            {
+                return "Login successful.";
+            }
+            return "Invalid password.";
+        }
+
+
+
         //Create a user
         public async Task<string> CreateUser(string username, string password, string email)
         {

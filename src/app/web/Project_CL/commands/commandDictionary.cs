@@ -13,7 +13,7 @@ namespace Project_CL.commands
                                             {
                                                 { "players", input => GetUsersAsync().Wait() },
                                                 { "register", input => CreateUser(input).Wait() },
-                                                { "info", RegisterUser }
+                                                { "login", input => LoginUser(input).Wait() }
                                             };
 
         private static userCreationAndInfo userInfo = new userCreationAndInfo();
@@ -33,6 +33,7 @@ namespace Project_CL.commands
             if (userFields.Length != 4)
             {
                 Console.WriteLine("Invalid registration format. Expected: username|password|email");
+                commandResponse = "Invalid registration format. Expected: username|password|email";
                 return;
             }
 
@@ -46,9 +47,22 @@ namespace Project_CL.commands
             commandResponse = result;
         }
 
-        private static void RegisterUser(string input)
+        public async Task LoginUser(string input)
         {
-            // Code to handle "register" command
+            // Split userInfo into username, password, and email
+            string[] userFields = input.Split('|');
+            if (userFields.Length != 4)
+            {
+                Console.WriteLine("Invalid registration format. Expected: username|password|email");
+                return;
+            }
+            string username = userFields[1];
+            string password = userFields[2];
+
+            string result = await userInfo.LoginUser(username, password);
+            Console.WriteLine($"Logging in user: {username}");
+            commandResponse = result;
+
         }
     }
 }

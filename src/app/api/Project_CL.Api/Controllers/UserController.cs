@@ -29,6 +29,20 @@
             return Ok(users);
         }
 
+        //Get User for login by name
+        [HttpGet("{username}", Name = "getuser")]
+        public ActionResult<User> GetUser(string username)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Username== username);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
+        }
+
         // POST: 
         [HttpPost(Name = "createuser")]
         public ActionResult<User> CreateUser([FromBody] User newUser)
@@ -41,6 +55,7 @@
             _context.SaveChanges();
             return Ok(newUser);
         }
+      
     }
 
 }

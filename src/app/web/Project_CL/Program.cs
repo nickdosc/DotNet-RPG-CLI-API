@@ -42,6 +42,11 @@ class Server
                 await commandDictionary.CreateUser(request);
                 response = commandDictionary.commandResponse;
             }
+            else if(request.Contains("login"))
+            {
+                await commandDictionary.LoginUser(request);
+                response = commandDictionary.commandResponse;
+            }
             else
             {
                 if (commandDictionary.commandHandlers.ContainsKey(request))
